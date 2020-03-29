@@ -38,5 +38,19 @@ namespace lab02.Controllers
             student.IndexNumber = $"s{new Random().Next(1, 20000)}";
             return Ok(student);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateStudent(int id, Student student)
+        {
+            //... update student
+            return Ok("Aktualizacja dokończona");
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStudent(int id)
+        {
+            //... delete student
+            return Ok("Usuwanie ukuńczone");
+        }
     }
 }
