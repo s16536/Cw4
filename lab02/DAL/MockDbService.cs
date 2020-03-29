@@ -8,7 +8,7 @@ namespace lab02.DAL
 {
     public class MockDbService : IDbService
     {
-        private static IEnumerable<Student> _students;
+        private static List<Student> _students;
 
         static MockDbService()
         {
@@ -20,9 +20,34 @@ namespace lab02.DAL
             };
         }
 
+        public void AddStudent(Student student)
+        {
+            _students.Add(student);
+        }
+
+        public void DeleteStudent(int id)
+        {
+            var student = GetStudent(id);
+            if (student != null)
+            {
+                _students.Remove(student);
+            }
+        }
+
+        public Student GetStudent(int id)
+        {
+            return _students.FirstOrDefault(s => s.IdStudent == id);
+        }
+
         public IEnumerable<Student> GetStudents()
         {
             return _students;
+        }
+
+        public void UpdateStudent(int id, Student student)
+        {
+            DeleteStudent(id);
+            AddStudent(student);
         }
     }
 }

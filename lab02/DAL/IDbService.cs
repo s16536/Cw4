@@ -9,5 +9,9 @@ namespace lab02.DAL
     public interface IDbService
     {
         public IEnumerable<Student> GetStudents();
+        public Student GetStudent(int id);
+        public void AddStudent(Student student);
+        public void DeleteStudent(int id);
+        public void UpdateStudent(int id, Student student);
     }
 }

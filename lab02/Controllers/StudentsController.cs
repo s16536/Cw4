@@ -28,37 +28,34 @@ namespace lab02.Controllers
         [HttpGet("{id}")]
         public IActionResult GetStudent(int id)
         {
-            if (id == 1)
+            var student = _dbService.GetStudent(id);
+            if (student == null)
             {
-                return Ok("Kowalski");
-            } else if (id ==2 )
-            {
-                return Ok("Malewski");
+                return NotFound("Nie znaleziono studenta"); ;
             }
-            return NotFound("Nie znaleziono studenta"); ;
+            return Ok(student);
         }
 
         [HttpPost]
         public IActionResult CreateStudent(Student student)
         {
-            //... add to database
-            //... generate index number
             student.IndexNumber = $"s{new Random().Next(1, 20000)}";
+            _dbService.AddStudent(student);
             return Ok(student);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateStudent(int id, Student student)
         {
-            //... update student
+            _dbService.UpdateStudent(id, student);
             return Ok("Aktualizacja dokończona");
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteStudent(int id)
         {
-            //... delete student
-            return Ok("Usuwanie ukuńczone");
+            _dbService.DeleteStudent(id);
+            return Ok("Usuwanie ukończone");
         }
     }
 }
