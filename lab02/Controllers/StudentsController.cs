@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using lab02.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lab02.Controllers
@@ -27,6 +28,15 @@ namespace lab02.Controllers
                 return Ok("Malewski");
             }
             return NotFound("Nie znaleziono studenta"); ;
+        }
+
+        [HttpPost]
+        public IActionResult CreateStudent(Student student)
+        {
+            //... add to database
+            //... generate index number
+            student.IndexNumber = $"s{new Random().Next(1, 20000)}";
+            return Ok(student);
         }
     }
 }
