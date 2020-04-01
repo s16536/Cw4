@@ -25,14 +25,22 @@ namespace lab02.DAL
 
         public Student GetStudent(string id)
         {
-            // sql injection: zapytanie /api/students/s16536;'drop%20table%20student;%20--
-            var command = SELECT_SQL + " where IndexNumber = '" + id + "'";
+            //sql injection nie dziala
+            var command = new SqlCommand
+            {
+                CommandText = SELECT_SQL + " where IndexNumber = @id;"
+            };
+            command.Parameters.AddWithValue("id", id);
             return getResults(command).FirstOrDefault();
         }
 
         public IEnumerable<Student> GetStudents()
         {
-            return getResults(SELECT_SQL);
+            var command = new SqlCommand
+            {
+                CommandText = SELECT_SQL + ";"
+            };
+            return getResults(command);
         }
 
         public void UpdateStudent(int id, Student student)
@@ -40,14 +48,13 @@ namespace lab02.DAL
             throw new NotImplementedException();
         }
 
-        private IEnumerable<Student> getResults(String commandText)
+        private IEnumerable<Student> getResults(SqlCommand command)
         {
             var list = new List<Student>();
             using (var connection = new SqlConnection(CONNECTION_STRING))
-            using (var command = new SqlCommand())
+            using (command)
             {
                 command.Connection = connection;
-                command.CommandText = commandText + ";";
                 connection.Open();
                 var dataReader = command.ExecuteReader();
                 while (dataReader.Read())
