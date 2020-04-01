@@ -23,9 +23,10 @@ namespace lab02.DAL
             throw new NotImplementedException();
         }
 
-        public Student GetStudent(int id)
+        public Student GetStudent(string id)
         {
-            var command = SELECT_SQL + " where IndexNumber = " + id;
+            // sql injection: zapytanie /api/students/s16536;'drop%20table%20student;%20--
+            var command = SELECT_SQL + " where IndexNumber = '" + id + "'";
             return getResults(command).FirstOrDefault();
         }
 

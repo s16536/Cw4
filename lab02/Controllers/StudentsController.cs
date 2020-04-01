@@ -27,7 +27,7 @@ namespace lab02.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetStudent(int id)
+        public IActionResult GetStudent(string id)
         {
             var student = _dbService.GetStudent(id);
             if (student == null)
