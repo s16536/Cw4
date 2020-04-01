@@ -13,7 +13,6 @@ namespace lab02.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
-        private const string CONNECTION_STRING = "Data Source=db-mssql;Initial Catalog=s16536;Integrated Security=True";
         private readonly IDbService _dbService;
 
         public StudentsController(IDbService dbService)
@@ -22,32 +21,9 @@ namespace lab02.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetStudent(string orderBy)
+        public IActionResult GetStudent()
         {
-
-            var list = new List<Student>();
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            using (var command = new SqlCommand())
-            {
-                command.Connection = connection;
-                command.CommandText = "select FirstName, LastName, BirthDate, Semester, Name from Student s left join Enrollment e on s.IdEnrollment = e.IdEnrollment left join Studies studies on e.IdStudy = studies.IdStudy;";
-                connection.Open();
-                var dataReader = command.ExecuteReader();
-                while (dataReader.Read())
-                {
-                    var student = new Student()
-                    {
-                        FirstName = dataReader["FirstName"].ToString(),
-                        LastName = dataReader["LastName"].ToString(),
-                        DateOfBirth = DateTime.Parse(dataReader["BirthDate"].ToString()),
-                        Faculty = dataReader["Name"].ToString(),
-                        Semester = Int32.Parse(dataReader["Semester"].ToString())
-                    };
-                    list.Add(student);
-                }
-
-            }
-            return Ok(list);
+            return Ok(_dbService.GetStudents());
         }
 
         [HttpGet("{id}")]
