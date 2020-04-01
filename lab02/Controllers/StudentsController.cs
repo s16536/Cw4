@@ -24,11 +24,30 @@ namespace lab02.Controllers
         [HttpGet]
         public IActionResult GetStudent(string orderBy)
         {
-            using (var client = new SqlConnection(CONNECTION_STRING))
-            { 
-            
+
+            var list = new List<Student>();
+            using (var connection = new SqlConnection(CONNECTION_STRING))
+            using (var command = new SqlCommand())
+            {
+                command.Connection = connection;
+                command.CommandText = "select FirstName, LastName, BirthDate, Semester, Name from Student s left join Enrollment e on s.IdEnrollment = e.IdEnrollment left join Studies studies on e.IdStudy = studies.IdStudy;";
+                connection.Open();
+                var dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    var student = new Student()
+                    {
+                        FirstName = dataReader["FirstName"].ToString(),
+                        LastName = dataReader["LastName"].ToString(),
+                        DateOfBirth = DateTime.Parse(dataReader["BirthDate"].ToString()),
+                        Faculty = dataReader["Name"].ToString(),
+                        Semester = Int32.Parse(dataReader["Semester"].ToString())
+                    };
+                    list.Add(student);
+                }
+
             }
-            return Ok(_dbService.GetStudents());
+            return Ok(list);
         }
 
         [HttpGet("{id}")]

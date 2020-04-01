@@ -11,6 +11,8 @@ namespace lab02.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string IndexNumber { get; set; }
-
+        public DateTime DateOfBirth { get; set; }
+        public String Faculty { get; set; }
+        public int Semester { get; set; }
     }
 }
