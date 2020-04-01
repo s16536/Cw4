@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using lab02.DAL;
@@ -12,6 +13,7 @@ namespace lab02.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
+        private const string CONNECTION_STRING = "Data Source=db-mssql;Initial Catalog=s16536;Integrated Security=True";
         private readonly IDbService _dbService;
 
         public StudentsController(IDbService dbService)
@@ -22,6 +24,10 @@ namespace lab02.Controllers
         [HttpGet]
         public IActionResult GetStudent(string orderBy)
         {
+            using (var client = new SqlConnection(CONNECTION_STRING))
+            { 
+            
+            }
             return Ok(_dbService.GetStudents());
         }
 
